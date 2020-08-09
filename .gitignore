@@ -1,0 +1,8 @@
+dist/
+lavalink/logs
+lavalink/Lavalink.jar
+lavalink/application.yml
+src/config.ts
+node_modules/
+.idea
+.vscode

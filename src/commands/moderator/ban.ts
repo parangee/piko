@@ -1,0 +1,42 @@
+import {ArgumentCollectorResult, Command, CommandoClient, CommandoMessage} from "discord.js-commando";
+import {GuildMember, Message, User} from "discord.js";
+
+export default class Kick extends Command {
+    constructor(client: CommandoClient) {
+        super(client, {
+            guildOnly: true,
+            userPermissions: ['BAN_MEMBERS'],
+            clientPermissions: ['BAN_MEMBERS'],
+            memberName: 'ban',
+            group: 'moderator',
+            description: '차단 명령어',
+            name: '차단',
+            aliases: ['ban', '밴'],
+            args: [
+                {
+                    key: 'user',
+                    type: 'member',
+                    prompt: '차단할 유저를 입력해주세요'
+                },
+                {
+                    key: 'day',
+                    type: 'integer',
+                    prompt: '차단할 기간을 입력해주세요',
+                    default: ''
+                },
+                {
+                    key: 'reason',
+                    type: 'string',
+                    prompt: '차 사유를 입력해주세요.',
+                    default: '사유 없음'
+                }
+            ]
+        });
+    }
+
+    async run(msg: CommandoMessage, args: {user: GuildMember, reason: string, day: number|string}, fromPattern: boolean, result?: ArgumentCollectorResult): Promise<Message | Message[] | null> {
+        await args.user.ban({reason: args.reason, days: typeof args.day === 'string' ? undefined : args.day})
+        await msg.react('731437745582637066')
+        return null
+    }
+}
